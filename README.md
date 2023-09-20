@@ -1,3 +1,113 @@
+# Assignment 3
+
+## APP
+Check out the link to my [APP](https://stockit.adaptable.app/main/)
+## Answers
+
+### 1.  What is the difference between POST form and GET form in Django?
+POST method:
+    - Used to submit data from a form to a web server using the HttpPost object.
+    - The data is sent internally, so it is not shown in the URL parameters. This makes it more secure than the GET method.
+    - You can send unlimited data using the POST method.
+    - Django uses a csrf_token to protect POST requests from cross-site request forgery (CSRF) attacks.
+
+GET method:
+    - Used to submit data from a form to a web server using URL parameters.
+    - The GET method calls the HttpGet object to send data from the form to the web server.
+    - All data is shown in the URL, so the GET method is not as secure as the POST method.
+    - You can only send a limited amount of data using the GET method.
+    - The default URL method is GET, so when you visit a web URL in your web browser, it is called using the GET method.
+
+### 2.  What are the main differences between XML, JSON, and HTML in the context of data delivery?
+XML
+    - Represents data in a tree pattern
+    - Uses tags to differentiate between data attributes and the actual data
+    - Offers the capability to display data
+    - More secure compared to JSON
+    - Used to represent data in a machine-readable way
+    - Still the go-to choice for transmitting structured data over the web
+    - Used to store or transport data in web applications
+JSON
+    - Represents data using key-value pairs
+    - Has no display capabilities
+    - Less secured compared to XML
+    - Independent of any programming language and is a common API output in a wide variety of applications
+    - Used to store and transmit data
+    - Gaining popularity as a storage medium for web applications because of its simplicity
+    - Faster than XML because of its smaller footprint and more straightforward syntax
+HTML
+    - Used to format and display data
+    - Not used for data interchange
+    - Used to create web pages
+    - Used to define the structure and content of web pages
+
+ ### 3. Why is JSON often used in data exchange between modern web applications?
+ It is because JSON is a popular data format that is easy to read and write for humans and computers. It is a lightweight alternative to XML and is used for easy parsing on the web. JSON uses a human-readable format of key-value pairs and arrays, which makes it easy to write and understand. It does not require any special tags, attributes, or schemas, unlike XML, which is another common data format for web applications. JSON supports common data types such as strings, numbers, booleans, nulls, objects, and arrays, which can be nested and combined in various ways. JSON can be easily converted to and from JavaScript objects, which makes it convenient for web developers who use JavaScript as the main scripting language for web applications. JSON's simplicity is part of its appeal, as it is easy to write, read, and translate between the data structures used by most languages.
+
+### 4.Explain how you implemented the checklist above step-by-step (not just following the tutorial).
+ 1. First let's create `forms.py` inside our `main` folder.
+
+    After we navigate inside the file `forms.py` we need to create a class named `ProductForm` for running the form by using `ModelForm ` as parameter. Inside the class we create a `META` class containing `model = Product` to point to a model used by the form. It also contain `fields = ["name",  "amount", "price", "description", "category", "location"]` to be used to select attributes of the model `Item`.
+ 2. Next, we create `create_product` object inside views.py
+
+    Inside the file `views.py` we create a function named `create_product` that accept a parameter request. In `create_product` we create a new `ProductForm` filled with user input in `request.POST` as a `QueryDict`. Then we authorize the content by using `form.is_valid()` and save the content of the form by using `form.save()`. After the content has been saved, we need to transfer the user back to the main page by using `return HttpResponseRedirect(reverse('main:show_main'))`. the function will render `create_product.html`.
+ 3. Modify the `show_main` function inside `views.py`
+
+    add `items = Item.objects.all()` to fetch all `item` object from the application's database.
+ 4. Create URL routing for `create_product`
+
+    in `urls.py` inside `library_col` we need to add `path('create-product', create_product, name='create_product'),`.
+ 5. Create an HTML file `create_product.html` inside a folder named as `templates` inside the `main` folder
+
+    Fill the HTML file with the suitable code to display the form as a table, used `{% csrf_token %}` as a security, and used `<form method="POST">` to tag the form with `POST` method.
+ 6. Create an object `show_xml` to show the content as XML and create the URL routing for it
+
+    Fetched `Item` objects and return as XML by using 
+    ```py
+    def show_xml(request):
+        data = Item.objects.all()
+        return HttpResponse(serializers.serialize("xml", data), content_type="application/xml")
+    ```
+    in `urls.py` inside `library_col` add `path('show_xml/', show_xml, name='show_xml'),`.
+ 7. Create object `show_json`to show the table content as JSON and create the URL routing for it
+
+    Fetched `Item` objects and return as XML by using 
+    ```py
+    def show_json(request):
+        data = Item.objects.all()
+        return HttpResponse(serializers.serialize("json", data), content_type="application/json")
+    ```
+    in `urls.py` inside `library_col` add `path('show_json/', show_json, name='show_json'),`.
+ 8. Create object `show_xml_by_id` to search a particular object in XML views by their object's id and create the URL routing for it
+
+    Fetched `Item` objects and return as XML by using 
+    ```py
+    def show_xml_by_id(request, id):
+        data = Item.objects.filter(pk=id)
+        return HttpResponse(serializers.serialize("xml", data), content_type="application/xml")
+    ```
+    in `urls.py` inside `library_col` add `path('show_xml_by_id/', show_xml_by_id, name='show_xml_by_id'),`.
+ 9. Create object `show_json_by_id` to search a particular object in JSON views by their object's id and create the URL routing for it
+
+    Fetched `Item` objects and return as XML by using 
+    ```py
+    def show_json_by_id(request, id):
+        data = Item.objects.filter(pk=id)
+        return HttpResponse(serializers.serialize("json", data), content_type="application/json")
+    ```
+    in `urls.py` inside `library_col` add `path('show_json_by_id/', show_json_by_id, name='show_json_by_id'),`.
+ 10. Run Postman app to view our data
+     Open an app named as Postman in the same dekstop as our code, create a new request with the GET method and put the suitable URL to view the content in many ways, HTML, XML, JSON, XML by id and JSON by id
+
+ 11. Deploy our web to PBP Fasilkom UI PaaS and git add, commit and push our directory to our GitHub Repository
+
+### Access the five URLs in point 2 using Postman, take screenshots of the results in Postman, and add them to README.md.
+<img src="/assets/Screenshot (106).png">
+<img src="/assets/Screenshot (107).png">
+<img src="/assets/Screenshot (108).png">
+<img src="/assets/Screenshot (109).png">
+<img src="/assets/Screenshot (110).png">
+
 # Assignment 2
 
 ## APP
