@@ -1,7 +1,59 @@
-<h1>{{app_name}}</h1>
+{% extends 'base.html' %}
 
-<h5>Name:</h5>
-<p>{{ name }}</p>
+{% block content %}
+    <div class="center-container">
+        <h1 style="font-family: Cascadia Code;">{{app_name}}</h1>
 
-<h5>Class:</h5>
-<p>{{ class }}</p>
+        <p style="font-family: Papyrus;"><strong>Managed by {{name}}</strong></p>
+
+        <p style="font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;  letter-spacing: 2px; "><strong>Class: {{class}}</strong></p>
+
+        <p style="font-family: Century Gothic;">You purchased {{ products.count }} Product(s)</p>
+
+
+        <table style="font-family: Century Gothic; text-align:left; margin: 20px auto; border-collapse: separate; border-spacing: 40px 20px;">
+            <tr>
+                <th style="width: 400px;">Name</th>
+                <th style="width: 0px;">Amount</th>
+                <th style="width: 200px;">Price</th>
+                <th style="width: 950px;">Description</th>
+                <th style="width: 300px;">Date Added</th>
+                <th style="width: 0px;">Category</th>
+                <th style="width: 0px;">Location</th>
+            </tr>
+
+            {% comment %} Below is how to show the product data {% endcomment %}
+
+            {% for product in products %}
+                <tr>
+                    <td>{{product.name}}</td>
+                    <td>{{product.amount}}</td>
+                    <td>{{product.price}}</td>
+                    <td style="text-align: justify;">{{product.description}}</td>
+                    <td>{{product.date_added}}</td>
+                    <td>{{product.category}}</td>
+                    <td>{{product.location}}</td>
+                </tr>
+            {% endfor %}
+        </table>
+
+    
+
+        <a href="{% url 'main:create_product' %}">
+            <button style="font-family: Candara; font-size: 20px; border-radius: 12px; background-color: black; color: white;">
+                Add New Product
+            </button>
+        </a>
+    </div>
+    
+    <style>
+        .center-container {
+            text-align: center;
+            margin: 0 auto;
+            background-image: url('Image/6942219.jpg'); /* Relative path to your image */
+            background-size: cover; /* This ensures the image covers the entire container */
+            background-repeat: no-repeat; /* Prevents image from repeating */
+            background-attachment: fixed;
+        }
+    </style>
+{% endblock content %}
