@@ -1,0 +1,81 @@
+{% extends 'base.html' %}
+
+{% block meta %}
+    <title>Login</title>
+{% endblock meta %}
+
+{% block content %}
+<style>
+    .login {
+        text-align: center;
+        margin-top: 50px; /* Adjust the margin-top value as needed to position it */
+        font-family: "Your Luxurious Font", cursive; /* Replace "Your Luxurious Font" with the actual font you want to use */
+        font-size: 24px; /* Adjust the font size as needed */
+    }
+
+    .btn.login_btn {
+        background-color: black;
+        color: white;
+        font-family: "Cooler Font", sans-serif; /* Replace "Cooler Font" with the cooler font you want to use */
+        font-size: 18px; /* Adjust the font size as needed */
+        padding: 10px 20px; /* Adjust padding to make the button bigger */
+        border-radius: 12px; /* Rounded corners */
+        border: none;
+        cursor: pointer;
+    }
+
+    .btn.login_btn:hover {
+        background-color: #333; /* Darken the background color on hover */
+    }
+
+    .form-control {
+        font-family: "Elegant Font", cursive; /* Replace "Elegant Font" with the elegant font you want to use */
+        font-size: 16px; /* Adjust the font size as needed */
+        border: 2px solid #ccc; /* Border style */
+        border-radius: 20px; /* Rounded corners */
+        padding: 10px 15px; /* Padding */
+        width: 100%; /* Full width */
+        margin-bottom: 15px; /* Margin between input fields */
+    }
+
+    
+</style>
+
+<div class = "login">
+
+    <h1>Login</h1>
+
+    <form method="POST" action="">
+        {% csrf_token %}
+        <table style="font-family: Century Gothic; text-align:left; margin: 80px auto; border-collapse: separate; border-spacing: 40px 20px;">
+
+            <tr>
+                <td>Username: </td>
+                <td><input type="text" name="username" placeholder="Username" class="form-control"></td>
+            </tr>
+                    
+            <tr>
+                <td>Password: </td>
+                <td><input type="password" name="password" placeholder="Password" class="form-control"></td>
+            </tr>
+
+            <tr>
+                <td></td>
+                <td><input class="btn login_btn" type="submit" value="Login"></td>
+            </tr>
+        </table>
+    </form>
+
+    {% if messages %}
+        <ul>
+            {% for message in messages %}
+                <li>{{ message }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}     
+        
+    Don't have an account yet? <a href="{% url 'main:register' %}">Register Now</a>
+
+</div>
+
+{% endblock content %}

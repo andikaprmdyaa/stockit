@@ -1,19 +1,98 @@
-{% extends 'base.html' %} 
+{% extends 'base.html' %}
 
 {% block content %}
-<h1>Add New Product</h1>
+<div class="add-product-form">
+    <h1>Add New Product</h1>
 
-<form method="POST">
-    {% csrf_token %}
-    <table>
-        {{ form.as_table }}
-        <tr>
-            <td></td>
-            <td>
-                <input type="submit" value="Add Product"/>
-            </td>
-        </tr>
-    </table>
-</form>
+    <form method="POST">
+        {% csrf_token %}
+        <table>
+            {{ form.as_table }}
+            <tr>
+                <td></td>
+                <td>
+                    <input type="submit" value="Add Product" class="btn-add-product" />
+                </td>
+            </tr>
+        </table>
+    </form>
+</div>
+
+<style>
+    .add-product-form {
+        text-align: center;
+        margin: 50px auto;
+        max-width: 400px;
+        padding: 20px;
+        border: 1px solid #ccc;
+        border-radius: 10px;
+        background-color: #f5f5f5;
+    }
+
+    .add-product-form h1 {
+        font-family: "Your Nice Font", cursive; /* Replace with your preferred font */
+        font-size: 24px;
+        margin-bottom: 20px;
+    }
+
+    .add-product-form table {
+        width: 100%;
+    }
+
+    .add-product-form table tr {
+        margin-bottom: 10px;
+    }
+
+    .add-product-form input[type="text"],
+    .add-product-form input[type="number"] {
+        width: 80%;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+    }
+
+    /* Style the description input specifically */
+    .add-product-form textarea[name="description"] {
+        width: 80%;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 10px; /* Rounded edges for the description field */
+        resize: none; /* Prevent textarea resizing */
+    }
+
+    /* Style the category select */
+    .add-product-form select[name="category"] {
+        width: 80%;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 30px; /* Increase the border-radius to make it more rounded */
+        background-color: #fff; /* Set background color */
+        font-family: "Your Nice Font", cursive; /* Replace with your preferred font */
+        font-size: 16px;
+    }
+
+    /* Style form labels with the class "form-label" */
+    .form-label {
+        font-family: "Your Nice Font", cursive; /* Replace with your preferred font */
+        font-size: 16px;
+        font-weight: bold; /* Add font weight for better readability */
+    }
+
+    
+    .btn-add-product {
+        background-color: #007bff;
+        color: #fff;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-family: "Your Nice Font", cursive; /* Replace with your preferred font */
+        font-size: 16px;
+    }
+
+    .btn-add-product:hover {
+        background-color: #0056b3;
+    }
+</style>
 
 {% endblock %}

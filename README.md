@@ -1,3 +1,97 @@
+# Assignment 4
+
+## APP
+Check out the link to my [APP](https://stockit.adaptable.app/main/)
+## Answers
+
+### 1.  What is UserCreationForm in Django? Explain its advantages and disadvantages.
+UserCreationForm is a built-in form class in Django that allows us to create a new user with a username and a password.
+
+`Advantages`:
+- It is easy to use and saves you time from writing your own form class and validation logic.
+- It has a built-in password confirmation field that checks if the two passwords match.
+- It uses the default User model in Django, which has some useful attributes and methods for authentication and authorization.
+`Disadvantages`:
+- It only has two fields: username and password. If you want to add more fields to your user model, such as email, first name, last name, etc., you need to either extend the UserCreationForm class or create a custom form class that inherits from it.
+- It does not provide any customization options for the appearance or behavior of the form. For example, you cannot change the labels, placeholders, help texts, error messages, or widgets of the fields. You also cannot add any extra logic or functionality to the form, such as sending a confirmation email or logging the user in after registration.
+- It does not protect against brute force attacks or password cracking attempts. You may need to implement your own rate limiting mechanism or use the ones provided by your web server.
+
+### 2.  What is the difference between authentication and authorization in Django application? Why are both important?
+Authentication is the process of verifying the identity of a user, usually by asking for their username and password. Authorization is the process of granting or denying access to certain resources or actions based on the user’s identity, role, or permissions1.
+
+Both authentication and authorization are important for security and functionality reasons. Authentication ensures that only legitimate users can access the application and prevents unauthorized access from malicious actors. Authorization ensures that users can only perform the actions that they are allowed to do and prevents abuse of privileges or data leakage. Together, authentication and authorization provide a robust and flexible way of managing user access and control in Django application.
+
+### 3.  What are cookies in website? How does Django use cookies to manage user session data?
+Cookies are small pieces of data that a website sends to a user’s web browser. The browser may store the cookie and send it back to the same website with later requests. Cookies are used to remember information about the user, such as their login, preferences, shopping cart, or other data1.
+
+Django uses cookies to manage user session data by placing a session ID cookie on the client side, and storing all the related data on the server side. The session ID cookie is a unique identifier that Django uses to link the browser with the session data on the server. The session data is not stored in the cookie itself, but in a database or cache on the server2. This way, Django can provide a secure and efficient way of handling user sessions.
+
+### 4.  Are cookies secure to use? Is there potential risk to be aware of?
+Yes cookies are seucre to use, but they can pose some security and privacy risks if they are not handled properly. Some of the potential risks are:
+
+- Cookie theft: If an attacker can intercept the communication between our browser and a website, they can steal the cookies and use them to impersonate us or access our sensitive information. This can happen if we use an unsecured network, such as a public Wi-Fi, or if the website does not use encryption (HTTPS) to protect the data transmission.
+- Cookie tampering: If an attacker can modify the cookies on our browser or on the server, they can alter the information stored in them and cause unexpected or malicious behavior. For example, they can change our preferences, settings, or shopping cart items on a website, or inject malware code into the cookies that can execute on our browser or on the server.
+- Cookie tracking: If a website or a third-party service uses cookies to track our online activity, they can collect information about our browsing habits, interests, preferences, and personal data. This can be used for targeted advertising, marketing, or profiling purposes, which may violate our privacy or expose us to unwanted content.
+### 5.   Explain how you implemented the checklist above step-by-step (not just following the tutorial).
+- Setting Up User Registration:
+
+1. Start the virtual environment.
+2. Open views.py inside the main folder and create a register function that accepts a request as a parameter.
+3. Import redirect, UserCreationForm, and messages at the beginning of the file.
+4. Use UserCreationForm to create a registration form effortlessly.
+5. Handle form submission:
+    - Create a new form with UserCreationForm(request.POST)
+    - Validate the form with form.is_valid()
+    - Save the user account with form.save()
+    - Display a success message using messages.success()
+    - Redirect to the login page with return redirect('main:login').
+6. Create a new HTML file named register.html in the main/templates folder.
+7. Extend the base template, set the title, and create a registration form with CSRF token and submit button.
+8. Display success messages using {% if messages %}.
+
+- Setting Up User Login:
+
+1. In views.py, create a login_user function that accepts a request as a parameter.
+2. Im port authenticate and login at the beginning of the file.
+3. Use authenticate to verify the user's credentials.
+4. If authentication is successful, log in the user using login(request, user).
+5. Create an HTML file named login.html and create a login form.
+6. Add error messages for incorrect login attempts.
+7. Include a link to the registration page.
+8. Configure URL routing to access the login_user function.
+
+- Implementing User Logout:
+
+1. Create a logout_user function in views.py that accepts a request as a parameter.
+2. Import logout at the beginning of the file.
+3. Use logout(request) to log out the user.
+4. Redirect to the login page and delete the 'last_login' cookie.
+5. Add a logout button to the main page in main.html.
+6. Configure URL routing to access the logout_user function.
+
+- Restricting Access to the Main Page:
+
+1. Import login_required from django.contrib.auth.decorators in views.py.
+2. Apply the @login_required decorator to the show_main function to restrict access.
+3. Test the login restriction by running the Django project.
+
+- Using Data from Cookies:
+
+1. Import HttpResponseRedirect, reverse, and datetime in views.py.
+2. Modify the login_user function to set a 'last_login' cookie when a user logs in.
+3. Display the 'last login' data on the main page.
+4. Modify the logout_user function to delete the 'last_login' cookie when a user logs out.
+5. Run the Django project and verify the 'last_login' feature.
+
+- Connecting the Product Model to User Model:
+
+1. In models.py, import User from django.contrib.auth.models.
+2. Add a foreign key relationship between Product and User in the Product model.
+3. Modify the create_product function in views.py to associate products with the logged-in user.
+4. Update the show_main function to display only the products of the logged-in user.
+5. Run migrations and apply them to the database.
+6. Test the functionality by creating and viewing products for different user accounts.
+
 # Assignment 3
 
 ## APP

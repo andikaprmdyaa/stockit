@@ -8,14 +8,14 @@
 
         <p style="font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;  letter-spacing: 2px; "><strong>Class: {{class}}</strong></p>
 
-        <p style="font-family: Century Gothic;">You purchased {{ products.count }} Product(s)</p>
+        <p style="font-family: Century Gothic;">Welcome {{user_name}}, You purchased {{ products.count }} Product(s)</p>
 
 
-        <table style="font-family: Century Gothic; text-align:left; margin: 20px auto; border-collapse: separate; border-spacing: 40px 20px;">
+        <table style="font-family: Century Gothic; text-align:center; margin: 20px auto; border-collapse: separate; border-spacing: 40px 20px;">
             <tr>
                 <th style="width: 400px;">Name</th>
                 <th style="width: 0px;">Amount</th>
-                <th style="width: 200px;">Price</th>
+                <th style="width: 220px;">Price</th>
                 <th style="width: 950px;">Description</th>
                 <th style="width: 300px;">Date Added</th>
                 <th style="width: 0px;">Category</th>
@@ -25,23 +25,43 @@
             {% comment %} Below is how to show the product data {% endcomment %}
 
             {% for product in products %}
-                <tr>
-                    <td>{{product.name}}</td>
-                    <td>{{product.amount}}</td>
-                    <td>{{product.price}}</td>
+                <tr id="product - {{ product.id }}">
+                    <td style="text-align: left;">{{product.name}}</td>
+                    <td style="text-align: center;">{{product.amount}}</td>
+                    <td style="text-align: justify;">{{product.price}}</td>
                     <td style="text-align: justify;">{{product.description}}</td>
-                    <td>{{product.date_added}}</td>
-                    <td>{{product.category}}</td>
-                    <td>{{product.location}}</td>
+                    <td style="text-align: center;">{{product.date_added}}</td>
+                    <td style="text-align: justify;">{{product.category}}</td>
+                    <td style="text-align: justify;">{{product.location}}</td>
+                    <td>
+                        <form method="post" action="#product-{{ product.id }}"  style="text-align: left;">
+                            {%csrf_token %}
+                            <button style="font-family: Candara;font-size: 15px; border-radius: 12px; background-color: black; color: white; margin-bottom: 8px;" type="submit" name="increment" value="{{ product.id }}">
+                                Add
+                            </button>
+                            <button style="font-family: Candara; font-size: 15px; border-radius: 12px; background-color: black; color: white; margin-bottom: 8px;" type="submit" name="decrement" value="{{ product.id }}">
+                                Sold
+                            </button>
+                            <button style="font-family: Candara; font-size: 15px; border-radius: 12px; background-color: black; color: white; margin-bottom: 8px;" type="submit" name="delete" value="{{ product.id }}">
+                                Delete
+                            </button>
+                        </form>
+                    </td>
                 </tr>
             {% endfor %}
         </table>
 
-    
+        <h5>Last login session: {{ last_login }}</h5>
 
         <a href="{% url 'main:create_product' %}">
-            <button style="font-family: Candara; font-size: 20px; border-radius: 12px; background-color: black; color: white;">
+            <button style="font-family: Candara; font-size: 20px; border-radius: 12px; margin-right: 20px;background-color: black; color: white;">
                 Add New Product
+            </button>
+        </a>
+
+        <a href="{% url 'main:logout' %}">
+            <button style="font-family: Candara; font-size: 20px; border-radius: 12px; background-color: black; color: white;">
+                Logout
             </button>
         </a>
     </div>
@@ -56,4 +76,5 @@
             background-attachment: fixed;
         }
     </style>
+    
 {% endblock content %}
