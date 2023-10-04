@@ -6,49 +6,85 @@
 
 {% block content %}
 <style>
-    .login {
+    body {
+        background-color: #f0f0f0; /* Light gray background */
+        color: #333; /* Dark text */
+        font-family: Arial, sans-serif;
         text-align: center;
-        margin-top: 50px; /* Adjust the margin-top value as needed to position it */
-        font-family: "Your Luxurious Font", cursive; /* Replace "Your Luxurious Font" with the actual font you want to use */
-        font-size: 24px; /* Adjust the font size as needed */
     }
 
-    .btn.login_btn {
-        background-color: black;
-        color: white;
-        font-family: "Cooler Font", sans-serif; /* Replace "Cooler Font" with the cooler font you want to use */
-        font-size: 18px; /* Adjust the font size as needed */
-        padding: 10px 20px; /* Adjust padding to make the button bigger */
-        border-radius: 12px; /* Rounded corners */
+    .login {
+        margin: 50px auto;
+        padding: 20px;
+        background-color: #fff; /* White background */
+        border-radius: 10px;
+        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+        width: 90%; /* Wider login box */
+        max-width: 500px;
+    }
+
+    h1 {
+        font-size: 28px;
+        margin-bottom: 20px;
+        color: #ffcc00; /* Keep the font color */
+    }
+
+    form {
+        text-align: left;
+    }
+
+    table {
+        width: 100%;
+    }
+
+    th, td {
+        padding: 10px;
+    }
+
+    input[type="text"], input[type="password"] {
+        width: 100%;
+        padding: 10px;
+        margin: 5px 0;
         border: none;
+        background-color: #1a1a1a; /* Keep the background color */
+        color: #ffffff; /* Keep the text color */
+        border-bottom: 2px solid #ffcc00;
+        outline: none;
+    }
+
+    input[type="submit"] {
+        background-color: #ffcc00;
+        color: #1a1a1a; /* Keep the text color */
+        border: none;
+        padding: 10px 20px;
         cursor: pointer;
+        margin-top: 20px;
+        border-radius: 5px;
+        font-weight: bold;
+        transition: background-color 0.3s;
     }
 
-    .btn.login_btn:hover {
-        background-color: #333; /* Darken the background color on hover */
+    input[type="submit"]:hover {
+        background-color: #ffdb4d;
     }
 
-    .form-control {
-        font-family: "Elegant Font", cursive; /* Replace "Elegant Font" with the elegant font you want to use */
-        font-size: 16px; /* Adjust the font size as needed */
-        border: 2px solid #ccc; /* Border style */
-        border-radius: 20px; /* Rounded corners */
-        padding: 10px 15px; /* Padding */
-        width: 100%; /* Full width */
-        margin-bottom: 15px; /* Margin between input fields */
+    ul {
+        list-style-type: none;
+        padding: 0;
     }
 
-    
+    li {
+        color: #ffcc00; /* Keep the font color */
+        margin: 10px 0;
+        font-weight: bold;
+    }
 </style>
 
-<div class = "login">
-
+<div class="login">
     <h1>Login</h1>
-
     <form method="POST" action="">
         {% csrf_token %}
-        <table style="font-family: Century Gothic; text-align:left; margin: 80px auto; border-collapse: separate; border-spacing: 40px 20px;">
-
+        <table>
             <tr>
                 <td>Username: </td>
                 <td><input type="text" name="username" placeholder="Username" class="form-control"></td>
@@ -67,15 +103,14 @@
     </form>
 
     {% if messages %}
-        <ul>
-            {% for message in messages %}
-                <li>{{ message }}</li>
-            {% endfor %}
-        </ul>
+    <ul>
+        {% for message in messages %}
+        <li>{{ message }}</li>
+        {% endfor %}
+    </ul>
     {% endif %}     
         
     Don't have an account yet? <a href="{% url 'main:register' %}">Register Now</a>
-
 </div>
 
 {% endblock content %}

@@ -4,31 +4,103 @@
     <title>Register</title>
 {% endblock meta %}
 
-{% block content %}  
+{% block content %}
+<style>
+    body {
+        background-color: #f0f0f0; /* Light gray background */
+        color: #333; /* Dark text */
+        font-family: Arial, sans-serif;
+        text-align: center;
+    }
 
-<div class = "login">
-    
-    <h1>Register</h1>  
+    .login {
+        margin: 50px auto;
+        padding: 20px;
+        background-color: #fff; /* White background */
+        border-radius: 10px;
+        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+        width: 90%; /* Wider login box */
+        max-width: 1000px;
+    }
 
-        <form method="POST" >  
-            {% csrf_token %}  
-            <table>  
-                {{ form.as_table }}  
-                <tr>  
-                    <td></td>
-                    <td><input type="submit" name="submit" value="Daftar"/></td>  
-                </tr>  
-            </table>  
-        </form>
+    h1 {
+        font-size: 28px;
+        margin-bottom: 20px;
+        font-family: 'Cascadia Code', monospace; /* Use Cascadia Code font */
+        color: #333; /* Dark text */
+    }
 
-    {% if messages %}  
-        <ul>   
-            {% for message in messages %}  
-                <li>{{ message }}</li>  
-                {% endfor %}  
-        </ul>   
+    form {
+        text-align: left;
+    }
+
+    table {
+        width: 100%;
+    }
+
+    th, td {
+        padding: 10px;
+    }
+
+    input[type="text"], input[type="password"] {
+        width: 100%;
+        padding: 10px;
+        margin: 5px 0;
+        border: none;
+        background-color: #f0f0f0; /* Light gray background */
+        color: #333; /* Dark text */
+        border-bottom: 2px solid #ffcc00;
+        outline: none;
+    }
+
+    input[type="submit"] {
+        background-color: #ffcc00;
+        color: #333; /* Dark text */
+        border: none;
+        padding: 10px 20px;
+        cursor: pointer;
+        margin-top: 20px;
+        border-radius: 5px;
+        font-weight: bold;
+        transition: background-color 0.3s;
+    }
+
+    input[type="submit"]:hover {
+        background-color: #ffdb4d;
+    }
+
+    ul {
+        list-style-type: none;
+        padding: 0;
+    }
+
+    li {
+        color: #333; /* Dark text */
+        margin: 10px 0;
+        font-weight: bold;
+    }
+</style>
+
+<div class="login">
+    <h1>Register</h1>
+    <form method="POST">
+        {% csrf_token %}
+        <table>
+            {{ form.as_table }}
+            <tr>
+                <td></td>
+                <td><input type="submit" name="submit" value="Daftar" /></td>
+            </tr>
+        </table>
+    </form>
+
+    {% if messages %}
+    <ul>
+        {% for message in messages %}
+        <li>{{ message }}</li>
+        {% endfor %}
+    </ul>
     {% endif %}
-
-</div>  
+</div>
 
 {% endblock content %}
