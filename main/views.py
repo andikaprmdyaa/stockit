@@ -14,6 +14,8 @@ from django.contrib import messages
 from django.contrib.auth import authenticate, login
 from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required
+from django.views.decorators.csrf import csrf_exempt
+from django.http import HttpResponseNotFound
 
 
 @login_required(login_url='/login')
@@ -127,3 +129,49 @@ def edit_product(request, id):
 
     context = {'form': form}
     return render(request, "edit_product.html", context)
+
+def get_product_json(request):
+    product_item = Product.objects.filter(user=request.user)
+    return HttpResponse(serializers.serialize('json', product_item))
+
+def add_product_ajax(request):
+    if request.method == 'POST':
+        name = request.POST.get("name")
+        price = request.POST.get("price")
+        description = request.POST.get("description")
+        user = request.user
+
+        new_product = Product(name=name, price=price, description=description, user=user)
+        new_product.save()
+
+        return HttpResponse(b"CREATED", status=201)
+
+    return HttpResponseNotFound()
+
+
+@csrf_exempt
+def product_action_ajax(request):
+    if request.method == 'POST':
+        action = request.POST.get('action')
+        product_id = request.POST.get('product_id')
+
+        if action and product_id:
+            if action == 'add':
+                # Handle the "Add" action here
+                # Modify the product's quantity or other details as needed
+                # Return HttpResponse with status 201 if successful
+                return HttpResponse("Action completed", status=201)
+
+            elif action == 'decrement':
+                # Handle the "Sold" action here
+                # Modify the product's quantity or other details as needed
+                # Return HttpResponse with status 201 if successful
+                return HttpResponse("Action completed", status=201)
+
+            elif action == 'delete':
+                # Handle the "Delete" action here
+                # Delete the product from the database
+                # Return HttpResponse with status 201 if successful
+                return HttpResponse("Action completed", status=201)
+
+    return HttpResponseNotFound()

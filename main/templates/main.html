@@ -29,7 +29,39 @@
         </div>
       </div>
     </nav>
-    
+
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Add New Product</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="form" onsubmit="return false;">
+                        {% csrf_token %}
+                        <div class="mb-3">
+                            <label for="name" class="col-form-label">Name:</label>
+                            <input type="text" class="form-control" id="name" name="name"></input>
+                        </div>
+                        <div class="mb-3">
+                            <label for="price" class="col-form-label">Price:</label>
+                            <input type="number" class="form-control" id="price" name="price"></input>
+                        </div>
+                        <div class="mb-3">
+                            <label for="description" class="col-form-label">Description:</label>
+                            <textarea class="form-control" id="description" name="description"></textarea>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" id="button_add" data-bs-dismiss="modal">Add Product</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div class="center-container">
         <h1 style="font-family: Cascadia Code;">{{app_name}}</h1>
 
@@ -37,7 +69,8 @@
 
         <p style="font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;  letter-spacing: 2px; "><strong>Class: {{class}}</strong></p>
 
-        <table style="font-family: Century Gothic; text-align:center; margin: 20px auto; border-collapse: separate; border-spacing: 40px 20px;">
+       
+        <table id="product_table" style="font-family: Century Gothic; text-align:center; margin: 20px auto; border-collapse: separate; border-spacing: 40px 20px;">
             <tr>
                 <th style="width: 400px;">Name</th>
                 <th style="width: 0px;">Amount</th>
@@ -47,9 +80,9 @@
                 <th style="width: 0px;">Category</th>
                 <th style="width: 0px;">Location</th>
             </tr>
-
+        
             {% comment %} Below is how to show the product data {% endcomment %}
-
+        
             {% for product in products %}
                 <tr id="product - {{ product.id }}">
                     <td style="text-align: left;">{{product.name}}</td>
@@ -60,23 +93,22 @@
                     <td style="text-align: justify;">{{product.category}}</td>
                     <td style="text-align: justify;">{{product.location}}</td>
                     <td>
-                        <form method="post" action="#product-{{ product.id }}"  style="text-align: left;">
-                            {%csrf_token %}
-                            <button style="font-family: Candara;font-size: 15px; border-radius: 12px; background-color: black; color: white; margin-bottom: 8px;" type="submit" name="increment" value="{{ product.id }}">
+                        <form method="post" action="#product-{{ product.id }}" style="text-align: left;">
+                            {% csrf_token %}
+                            <button class="btn-action" data-action="add" data-product-id="{{ product.id }}">
                                 Add
                             </button>
-                            <button style="font-family: Candara; font-size: 15px; border-radius: 12px; background-color: black; color: white; margin-bottom: 8px;" type="submit" name="decrement" value="{{ product.id }}">
+                            <button class="btn-action" data-action="decrement" data-product-id="{{ product.id }}">
                                 Sold
                             </button>
-                            <button style="font-family: Candara; font-size: 15px; border-radius: 12px; background-color: black; color: white; margin-bottom: 8px;" type="submit" name="delete" value="{{ product.id }}">
+                            <button class="btn-action" data-action="delete" data-product-id="{{ product.id }}">
                                 Delete
                             </button>
                         </form>
                     </td>
                     <td>
                         <a href="{% url 'main:edit_product' product.pk %}">
-                            <button style="font-family: Candara; font-size: 20px; border-radius: 12px; margin-right: 20px;background-color: bisque; color: black;">
-
+                            <button style="font-family: Candara; font-size: 20px; border-radius: 12px; margin-right: 20px; background-color: bisque; color: black;">
                                 Edit
                             </button>
                         </a>
@@ -84,6 +116,7 @@
                 </tr>
             {% endfor %}
         </table>
+                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">Add Product by AJAX</button>
 
         <h5>Last login session: {{ last_login }}</h5>
 
@@ -100,6 +133,8 @@
         </a>
     </div>
     
+    
+
     <style>
         .center-container {
             text-align: center;
@@ -111,4 +146,107 @@
         }
     </style>
     
+    <script>
+        async function getProducts() {
+            return fetch("{% url 'main:get_product_json' %}").then((res) => res.json())
+        }
+        async function refreshProducts() {
+            document.getElementById("product_table").innerHTML = ""
+            const products = await getProducts()
+            let htmlString = `<tr>
+                <th style="width: 400px;">Name</th>
+                <th style="width: 0px;">Amount</th>
+                <th style="width: 220px;">Price</th>
+                <th style="width: 950px;">Description</th>
+                <th style="width: 300px;">Date Added</th>
+                <th style="width: 0px;">Category</th>
+                <th style="width: 0px;">Location</th>
+
+            </tr>`
+            products.forEach((item) => {
+                htmlString += `\n<tr>
+                <td style="text-align: left;">${item.fields.name}</td>
+                <td style="text-align: center;">${item.fields.amount}</td>
+                <td style="text-align: justify;">${item.fields.price}</td>
+                <td style="text-align: justify;">${item.fields.description}</td>
+                <td style="text-align: center;">${item.fields.date_added}</td>
+                <td style="text-align: justify;">${item.fields.category}</td>
+                <td style="text-align: justify;">${item.fields.location}</td>
+                <td>
+                    <form method="post" action="#product-{{ product.id }}" style="text-align: left;">
+                            {% csrf_token %}
+                            <button class="btn-action" data-action="add" data-product-id="{{ product.id }}">
+                                Add
+                            </button>
+                            <button class="btn-action" data-action="decrement" data-product-id="{{ product.id }}">
+                                Sold
+                            </button>
+                            <button class="btn-action" data-action="delete" data-product-id="{{ product.id }}">
+                                Delete
+                            </button>
+                        </form>
+                    </td>
+            </tr>` 
+            })
+            
+            document.getElementById("product_table").innerHTML = htmlString
+        }
+
+        refreshProducts()
+        
+        function addProduct() {
+            fetch("{% url 'main:add_product_ajax' %}", {
+                method: "POST",
+                body: new FormData(document.querySelector('#form'))
+            }).then(refreshProducts)
+
+            document.getElementById("form").reset()
+            return false
+        }
+        
+        document.getElementById("button_add").onclick = addProduct
+            // Add a click event listener to the document to handle button clicks
+    document.addEventListener("click", function (event) {
+        if (event.target.classList.contains("btn-action")) {
+            const action = event.target.getAttribute("data-action");
+            const productId = event.target.getAttribute("data-product-id");
+
+            if (action && productId) {
+                handleProductAction(action, productId);
+            }
+        }
+    });
+
+    // Function to handle product actions via AJAX
+    function handleProductAction(action, productId) {
+        const url = `{% url 'main:product_action_ajax' %}`;
+        const data = new FormData();
+        data.append("action", action);
+        data.append("product_id", productId);
+
+        fetch(url, {
+            method: "POST",
+            body: data,
+            headers: {
+                "X-CSRFToken": getCookie("csrftoken"),
+            },
+        })
+            .then((response) => {
+                if (response.status === 201) {
+                    // Action was successful, refresh product table
+                    refreshProducts();
+                }
+            })
+            .catch((error) => {
+                console.error("Error:", error);
+            });
+    }
+
+    // Function to get the CSRF token cookie value
+    function getCookie(name) {
+        const value = `; ${document.cookie}`;
+        const parts = value.split(`; ${name}=`);
+        if (parts.length === 2) return parts.pop().split(";").shift();
+    }
+    </script>
 {% endblock content %}

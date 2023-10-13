@@ -1,4 +1,39 @@
-# Assignment 4
+# Assignment 6
+
+## APP
+Check out the link to my [APP](https://stockit.adaptable.app/main/)
+## Answers
+
+### 1. Explain the difference between asynchronous programming and synchronous programming.
+Synchronous Programming:
+
+- Sequential Execution: In synchronous programming, tasks are executed one after the other, in a sequential manner. This means that if one task takes a long time to complete, it can block the entire program, making it unresponsive.
+
+- Blocking: When a task is in progress, the program "blocks" or waits for that task to finish before moving on to the next one. It's like standing in a queue – you can't do anything else until your turn comes.
+
+- Simple to Understand: Synchronous code is often easier to read and write because the flow of the program is straightforward. You can think of it as a step-by-step process.
+
+- Limited Concurrency: Synchronous code doesn't handle multiple tasks well because it waits for one task to finish before starting another. This can limit the program's ability to efficiently use system resources.
+
+Asynchronous Programming:
+
+- Parallel Execution: In asynchronous programming, tasks are initiated and allowed to run independently of the main program flow. This means that multiple tasks can be in progress at the same time.
+
+- Non-Blocking: Asynchronous code doesn't wait for a task to complete. Instead, it continues executing other tasks and periodically checks on the status of the asynchronous tasks. This prevents the program from becoming unresponsive.
+
+- Complex Control Flow: Asynchronous code often involves callback functions, promises, or async/await in languages like JavaScript. This can make the code more challenging to understand, as the flow isn't strictly sequential.
+
+- Better Concurrency: Asynchronous code is better at handling multiple tasks simultaneously, making it suitable for tasks like handling many user requests in a web server, reading/writing to files, or fetching data from the internet.
+
+### 2. In the implementation of JavaScript and AJAX, there is an implemented paradigm called the event-driven programming paradigm. Explain what this paradigm means and give one example of its implementation in this assignment.
+Event-driven programming is a programming paradigm that is commonly used in JavaScript and AJAX (Asynchronous JavaScript and XML) to handle and respond to events or user interactions. In this paradigm, the flow of the program is determined by events, which are essentially signals that something has happened, such as a user clicking a button, a timer elapsing, or data being received from a server. Instead of executing a sequence of tasks in a predefined order, the program waits for events and responds to them as they occur.
+### 3. Explain the implementation of asynchronous programming in AJAX.
+AJAX is triggered in response to an event. Once an event is detected, it initiates the creation of an XMLHttpRequest and sends the request to the server. Upon receiving a response, the data is parsed and then utilized.
+### 4. In this semester, the implementation of AJAX is done using the Fetch API rather than the jQuery library. Compare the two technologies and write down your opinion which technology is better to use.
+jQuery is like a big toolbox with many tools, even if i only need a simple screwdriver. The Fetch API is like just having the screwdriver i need. So, if i don't need all the extra stuff, the Fetch API is simpler and smaller. jQuery was created a while ago, and its way of doing things can look a bit old-fashioned.
+Why Use Fetch API: The Fetch API is like a specialized tool that's lighter and easier to work with, especially when i only need to make requests to a server. Using the Fetch API can make our code look more modern, following the latest ways to write good JavaScript.
+### 5. 
+# Assignment 5
 
 ## APP
 Check out the link to my [APP](https://stockit.adaptable.app/main/)
